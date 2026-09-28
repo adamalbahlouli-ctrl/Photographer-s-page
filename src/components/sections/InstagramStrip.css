@@ -1,0 +1,136 @@
+/* ============================================================
+   INSTAGRAM STRIP SECTION
+   ============================================================ */
+
+.instagram-strip {
+  background-color: var(--color-ivory);
+  padding-top: var(--space-16);
+  padding-bottom: 0;
+  position: relative;
+}
+
+.instagram-strip__header {
+  text-align: center;
+  margin-bottom: var(--space-10);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.instagram-strip__handle {
+  margin: 0;
+}
+
+.instagram-strip__handle-link {
+  font-size: clamp(1.5rem, 3vw, 2.25rem);
+  font-weight: 300;
+  color: var(--color-charcoal);
+  transition: color var(--transition-base);
+  text-decoration: none;
+}
+
+.instagram-strip__handle-link:hover {
+  color: var(--color-accent);
+}
+
+/* 5-Column Seamless Grid */
+.instagram-strip__grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+.instagram-strip__item {
+  display: block;
+  position: relative;
+  overflow: hidden;
+  text-decoration: none;
+  color: var(--color-ivory);
+}
+
+.instagram-strip__img-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  background-color: var(--color-cream);
+}
+
+.instagram-strip__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform var(--transition-image);
+}
+
+/* Hover Overlay */
+.instagram-strip__overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(17, 16, 16, 0.45);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  opacity: 0;
+  transition: opacity var(--transition-base);
+  backdrop-filter: blur(2px);
+}
+
+.instagram-strip__icon {
+  color: var(--color-ivory);
+  transition: transform var(--transition-base);
+}
+
+.instagram-strip__view-text {
+  font-family: var(--font-sans);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  color: var(--color-ivory);
+}
+
+.instagram-strip__item:hover .instagram-strip__img {
+  transform: scale(1.08);
+}
+
+.instagram-strip__item:hover .instagram-strip__overlay {
+  opacity: 1;
+}
+
+.instagram-strip__item:hover .instagram-strip__icon {
+  transform: translateY(-2px);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .instagram-strip__grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  /* Hide the 4th and 5th photo on smaller viewports for a cleaner 3-photo grid or show 5 */
+  .instagram-strip__item:nth-child(4),
+  .instagram-strip__item:nth-child(5) {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .instagram-strip {
+    padding-top: var(--space-10);
+  }
+
+  .instagram-strip__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .instagram-strip__item:nth-child(3) {
+    display: none;
+  }
+}

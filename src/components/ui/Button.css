@@ -1,0 +1,144 @@
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  font-family: var(--font-sans);
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  cursor: pointer;
+  border: none;
+  text-decoration: none;
+  transition: background-color var(--transition-base), color var(--transition-base), border-color var(--transition-base), opacity var(--transition-base);
+  position: relative;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Sizes */
+.btn--sm {
+  font-size: var(--text-xs);
+  padding: 10px 20px;
+}
+
+.btn--md {
+  font-size: var(--text-xs);
+  padding: 14px 28px;
+}
+
+.btn--lg {
+  font-size: var(--text-sm);
+  padding: 18px 40px;
+}
+
+/* Variants */
+.btn--primary {
+  background-color: var(--color-charcoal);
+  color: var(--color-ivory);
+  border: 1px solid var(--color-charcoal);
+}
+
+.btn--primary:hover:not(:disabled) {
+  background-color: transparent;
+  color: var(--color-charcoal);
+}
+
+.btn--secondary {
+  background-color: transparent;
+  color: var(--color-charcoal);
+  border: 1px solid var(--color-charcoal);
+}
+
+.btn--secondary:hover:not(:disabled) {
+  background-color: var(--color-charcoal);
+  color: var(--color-ivory);
+}
+
+.btn--outline-light {
+  background-color: transparent;
+  color: var(--color-ivory);
+  border: 1px solid rgba(247, 244, 239, 0.5);
+}
+
+.btn--outline-light:hover:not(:disabled) {
+  background-color: var(--color-ivory);
+  color: var(--color-charcoal);
+  border-color: var(--color-ivory);
+}
+
+.btn--ghost {
+  background-color: transparent;
+  color: var(--color-charcoal);
+  border: none;
+  padding-inline: 0;
+  letter-spacing: 0.12em;
+}
+
+.btn--ghost::after {
+  content: '';
+  display: block;
+  height: 1px;
+  background-color: currentColor;
+  transform: scaleX(1);
+  transition: transform var(--transition-base);
+  transform-origin: left;
+  margin-top: 2px;
+}
+
+.btn--ghost:hover::after {
+  transform: scaleX(0);
+}
+
+.btn--ghost-light {
+  background-color: transparent;
+  color: var(--color-ivory);
+  border: none;
+  padding-inline: 0;
+  letter-spacing: 0.12em;
+}
+
+.btn--ghost-light::after {
+  content: '';
+  display: block;
+  height: 1px;
+  background-color: currentColor;
+  transition: transform var(--transition-base);
+  transform-origin: left;
+  margin-top: 2px;
+}
+
+.btn--ghost-light:hover::after {
+  transform: scaleX(0);
+}
+
+/* Loading state */
+.btn--loading .btn__text {
+  opacity: 0;
+}
+
+.btn__spinner {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  border: 2px solid transparent;
+  border-top-color: currentColor;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn__spinner {
+    animation: none;
+    border: 2px solid currentColor;
+  }
+}

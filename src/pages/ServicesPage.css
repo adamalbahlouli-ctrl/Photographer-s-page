@@ -1,0 +1,290 @@
+/* ============================================================
+   SERVICES PAGE STYLES
+   ============================================================ */
+
+.services-page {
+  background-color: var(--color-ivory);
+}
+
+/* Header Banner */
+.services-header {
+  padding-top: calc(var(--header-height) + var(--space-12));
+  padding-bottom: var(--space-12);
+  text-align: center;
+}
+
+.services-header .text-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.services-header__title {
+  margin-top: var(--space-3);
+  letter-spacing: 0.06em;
+}
+
+.services-header__subtitle {
+  max-width: 620px;
+  margin-inline: auto;
+  margin-top: var(--space-2);
+  color: var(--color-warm-gray);
+}
+
+/* Services Grid */
+.services-list-section {
+  padding-top: var(--space-12);
+}
+
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+  gap: var(--space-8);
+  align-items: stretch;
+}
+
+.services-card-wrap {
+  display: flex;
+}
+
+.service-card {
+  width: 100%;
+  background-color: var(--color-white);
+  border: 1px solid var(--color-cream);
+  padding: var(--space-8);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: transform var(--transition-base), box-shadow var(--transition-base);
+}
+
+.service-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.05);
+}
+
+.service-card__top {
+  border-bottom: 1px solid var(--color-cream);
+  padding-bottom: var(--space-6);
+  margin-bottom: var(--space-6);
+}
+
+.service-card__category {
+  color: var(--color-accent);
+  margin-bottom: var(--space-2);
+  display: inline-block;
+}
+
+.service-card__title {
+  color: var(--color-charcoal);
+  margin-bottom: var(--space-1);
+}
+
+.service-card__subtitle {
+  font-size: var(--text-sm);
+  color: var(--color-warm-gray);
+  margin-bottom: var(--space-6);
+}
+
+.service-card__pricing {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.service-card__price {
+  font-family: var(--font-serif);
+  font-size: var(--text-3xl);
+  color: var(--color-charcoal);
+  line-height: 1.1;
+}
+
+.service-card__duration {
+  font-size: var(--text-xs);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-charcoal);
+  font-weight: 500;
+}
+
+.service-card__note {
+  font-size: var(--text-xs);
+  color: var(--color-warm-gray);
+  font-style: italic;
+}
+
+.service-card__body {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  margin-bottom: var(--space-8);
+}
+
+.service-card__description {
+  color: var(--color-warm-gray);
+}
+
+.service-card__includes {
+  padding-top: var(--space-2);
+}
+
+.service-card__includes-title {
+  display: block;
+  margin-bottom: var(--space-4);
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+}
+
+.service-card__includes-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.service-card__includes-item {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  font-size: var(--text-sm);
+  color: var(--color-charcoal);
+  line-height: 1.4;
+}
+
+.service-card__check {
+  color: var(--color-accent);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.service-card__footer {
+  padding-top: var(--space-4);
+}
+
+.service-card__btn {
+  width: 100%;
+  text-align: center;
+  justify-content: center;
+}
+
+/* Preparation Guide Section */
+.services-guide {
+  padding-block: var(--space-20);
+}
+
+.services-guide__box {
+  display: flex;
+  flex-direction: column;
+}
+
+.services-guide__title {
+  margin-top: var(--space-2);
+}
+
+.services-guide__steps {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+  margin-top: var(--space-4);
+}
+
+.services-guide__step {
+  display: flex;
+  gap: var(--space-6);
+  align-items: flex-start;
+}
+
+.services-guide__num {
+  font-family: var(--font-serif);
+  font-size: var(--text-3xl);
+  color: var(--color-accent);
+  line-height: 1;
+  min-width: 45px;
+}
+
+.services-guide__info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+/* FAQ Section */
+.services-faq {
+  padding-bottom: var(--space-24);
+}
+
+.services-faq .text-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.services-faq__list {
+  margin-top: var(--space-12);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.services-faq__item {
+  border-bottom: 1px solid var(--color-cream);
+  background-color: var(--color-white);
+  transition: background-color var(--transition-fast);
+}
+
+.services-faq__question {
+  width: 100%;
+  padding: var(--space-5) var(--space-6);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-4);
+  text-align: left;
+  font-family: var(--font-serif);
+  font-size: var(--text-xl);
+  color: var(--color-charcoal);
+  background: transparent;
+  cursor: pointer;
+}
+
+.services-faq__question:hover {
+  color: var(--color-accent);
+}
+
+.services-faq__icon {
+  font-size: var(--text-2xl);
+  font-family: var(--font-sans);
+  color: var(--color-accent);
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.services-faq__answer {
+  padding: 0 var(--space-6) var(--space-6) var(--space-6);
+  color: var(--color-warm-gray);
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.services-faq__cta {
+  margin-top: var(--space-16);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .services-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .services-guide__step {
+    gap: var(--space-4);
+  }
+}
