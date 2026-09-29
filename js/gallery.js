@@ -112,7 +112,19 @@ function renderLightboxSlide() {
   const prev     = lb.querySelector('.lightbox-prev');
   const next     = lb.querySelector('.lightbox-next');
 
-  if (img)      { img.src = item.image; img.alt = item.alt; }
+  if (img) {
+    img.setAttribute('referrerpolicy', 'no-referrer');
+    img.referrerPolicy = 'no-referrer';
+    img.onerror = function() {
+      if (this.dataset.fallbackApplied) return;
+      this.dataset.fallbackApplied = 'true';
+      if (typeof getPlaceholderSvg === 'function') {
+        this.src = getPlaceholderSvg(item.title, item.category);
+      }
+    };
+    img.src = item.image;
+    img.alt = item.alt;
+  }
   if (title)    title.textContent = item.title;
   if (category) category.textContent = item.category;
   if (desc)     desc.textContent = item.description;
@@ -156,6 +168,7 @@ function initPortfolioGrid() {
     const card = document.createElement('div');
     card.className = 'portfolio-card';
     card.setAttribute('data-category', item.categorySlug);
+    card.setAttribute('data-id', item.id);
     card.innerHTML = `
       <div class="portfolio-card-img-wrap">
         <img
@@ -163,6 +176,7 @@ function initPortfolioGrid() {
           alt="${item.alt}"
           class="portfolio-card-img"
           loading="lazy"
+          referrerpolicy="no-referrer"
         />
         <div class="portfolio-card-overlay">
           <button class="portfolio-card-btn" aria-label="Open photo: ${item.title}">VIEW PHOTOGRAPH</button>
@@ -173,6 +187,18 @@ function initPortfolioGrid() {
         <h3 class="portfolio-card-title">${item.title}</h3>
       </div>
     `;
+
+    const imgEl = card.querySelector('img');
+    if (imgEl) {
+      imgEl.onerror = function() {
+        if (this.dataset.fallbackApplied) return;
+        this.dataset.fallbackApplied = 'true';
+        this.classList.add('img-fallback');
+        if (typeof getPlaceholderSvg === 'function') {
+          this.src = getPlaceholderSvg(item.title, item.category);
+        }
+      };
+    }
 
     card.querySelector('.portfolio-card-btn').addEventListener('click', e => {
       e.stopPropagation();
@@ -196,8 +222,8 @@ function initPortfolioGrid() {
 function getVisibleItems() {
   const cards = document.querySelectorAll('#portfolio-grid .portfolio-card:not(.hidden)');
   return Array.from(cards).map(card => {
-    const slug = card.getAttribute('data-category');
-    return PORTFOLIO_ITEMS.find(i => i.categorySlug === slug);
+    const id = parseInt(card.getAttribute('data-id'), 10);
+    return PORTFOLIO_ITEMS.find(i => i.id === id);
   }).filter(Boolean);
 }
 

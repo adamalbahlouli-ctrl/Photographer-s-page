@@ -219,6 +219,32 @@ function initTestimonials() {
   startTimer();
   container.addEventListener('mouseenter', () => clearInterval(timer));
   container.addEventListener('mouseleave', startTimer);
+
+  // Touch / Mobile Swipe Support
+  let touchStartX = 0;
+  let touchStartY = 0;
+  container.addEventListener('touchstart', (e) => {
+    if (e.touches && e.touches[0]) {
+      touchStartX = e.touches[0].clientX;
+      touchStartY = e.touches[0].clientY;
+      clearInterval(timer);
+    }
+  }, { passive: true });
+
+  container.addEventListener('touchend', (e) => {
+    if (e.changedTouches && e.changedTouches[0]) {
+      const diffX = e.changedTouches[0].clientX - touchStartX;
+      const diffY = e.changedTouches[0].clientY - touchStartY;
+      if (Math.abs(diffX) > 40 && Math.abs(diffX) > Math.abs(diffY)) {
+        if (diffX < 0) {
+          goTo(current + 1); // Swiped left -> next
+        } else {
+          goTo(current - 1); // Swiped right -> prev
+        }
+      }
+      startTimer();
+    }
+  }, { passive: true });
 }
 
 // ============================================================
@@ -337,22 +363,76 @@ function initArticleModals() {
 }
 
 // ============================================================
-// ACTIVE NAV LINK
+// SAFE IMAGE FALLBACKS
+// ============================================================
+function getPlaceholderSvg(title, category) {
+  const t = encodeURIComponent(title || 'Carmela Sherwood');
+  const c = encodeURIComponent(category || 'Photograph Archive');
+  return `data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20800%201000%22%20width%3D%22800%22%20height%3D%221000%22%3E%3Crect%20width%3D%22800%22%20height%3D%221000%22%20fill%3D%22%23EDE9E1%22%2F%3E%3Crect%20x%3D%2240%22%20y%3D%2240%22%20width%3D%22720%22%20height%3D%22920%22%20fill%3D%22none%22%20stroke%3D%22%23B8935A%22%20stroke-width%3D%221%22%20opacity%3D%220.4%22%2F%3E%3Ctext%20x%3D%22400%22%20y%3D%22480%22%20font-family%3D%22Georgia%2C%20serif%22%20font-size%3D%2226%22%20font-weight%3D%22300%22%20fill%3D%22%231C1A17%22%20text-anchor%3D%22middle%22%20letter-spacing%3D%222%22%3E${t}%3C%2Ftext%3E%3Ctext%20x%3D%22400%22%20y%3D%22520%22%20font-family%3D%22sans-serif%22%20font-size%3D%2213%22%20font-weight%3D%22500%22%20fill%3D%22%238A8278%22%20text-anchor%3D%22middle%22%20letter-spacing%3D%224%22%3E${c}%3C%2Ftext%3E%3C%2Fsvg%3E`;
+}
+
+function initImageFallbacks() {
+  document.querySelectorAll('img').forEach(img => {
+    // Ensure referrer-policy is no-referrer on all images
+    img.setAttribute('referrerpolicy', 'no-referrer');
+    img.referrerPolicy = 'no-referrer';
+
+    img.addEventListener('error', function() {
+      if (this.dataset.fallbackApplied) return;
+      this.dataset.fallbackApplied = 'true';
+      this.classList.add('img-fallback');
+      const title = this.getAttribute('alt') || 'Photograph';
+      this.src = getPlaceholderSvg(title, 'CARMELA SHERWOOD');
+    });
+  });
+}
+
+// ============================================================
+// ACTIVE NAV LINK (supports .html and Vercel clean URLs)
 // ============================================================
 function initActiveNav() {
-  const path = window.location.pathname.split('/').pop() || 'index.html';
+  let path = window.location.pathname.replace(/\/$/, '').split('/').pop() || 'index.html';
+  if (!path.includes('.')) {
+    path = path + '.html';
+  }
   document.querySelectorAll('.nav-link, .mobile-nav-link').forEach(link => {
-    const href = link.getAttribute('href') || '';
-    if (href === path || (path === 'index.html' && href === './') || (path === '' && href === 'index.html')) {
+    let href = link.getAttribute('href') || '';
+    if (href.startsWith('/')) href = href.slice(1);
+    const linkBase = href.split('?')[0].split('#')[0];
+    if (linkBase === path || (path === 'index.html' && (linkBase === '' || linkBase === './' || linkBase === 'index.html'))) {
       link.classList.add('active');
     }
   });
 }
 
 // ============================================================
+// FLOATING BACK TO TOP BUTTON
+// ============================================================
+function initBackToTop() {
+  const btn = document.createElement('button');
+  btn.className = 'back-to-top';
+  btn.setAttribute('aria-label', 'Back to top');
+  btn.innerHTML = `<svg viewBox="0 0 24 24"><path d="M18 15l-6-6-6 6"/></svg>`;
+  document.body.appendChild(btn);
+
+  btn.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 400) {
+      btn.classList.add('visible');
+    } else {
+      btn.classList.remove('visible');
+    }
+  }, { passive: true });
+}
+
+// ============================================================
 // INIT
 // ============================================================
 document.addEventListener('DOMContentLoaded', () => {
+  initImageFallbacks();
   initHeader();
   initMobileMenu();
   initHeroImage();
@@ -361,4 +441,5 @@ document.addEventListener('DOMContentLoaded', () => {
   initFAQ();
   initArticleModals();
   initActiveNav();
+  initBackToTop();
 });

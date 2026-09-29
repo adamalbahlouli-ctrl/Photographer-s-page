@@ -1,23 +1,12 @@
 {
   "name": "carmela-sherwood-photography",
-  "private": true,
   "version": "1.0.0",
-  "type": "module",
-  "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "lint": "eslint .",
-    "preview": "vite preview"
-  },
-  "dependencies": {
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "react-router-dom": "^6.26.2"
-  },
-  "devDependencies": {
-    "@types/react": "^18.3.5",
-    "@types/react-dom": "^18.3.0",
-    "@vitejs/plugin-react": "^4.3.1",
-    "vite": "^5.4.8"
-  }
+  "private": true,
+  "description": "Carmela Sherwood Photography Portfolio — Pure Vanilla HTML5/CSS3/ES6+ Website",
+  "keywords": [
+    "photography",
+    "portfolio",
+    "vanilla-js",
+    "editorial"
+  ]
 }
