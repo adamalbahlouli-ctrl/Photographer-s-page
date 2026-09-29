@@ -17,37 +17,75 @@ const IMAGES = {
 };
 
 // ============================================================
-// HEADER — Transparent → Solid on scroll
+// HEADER — Transparent → Solid on scroll & Hide on Scroll Down / Show on Scroll Up
 // ============================================================
 function initHeader() {
   const header = document.querySelector('.header');
   if (!header) return;
 
   const hero = document.querySelector('.hero');
+  const SCROLL_THRESHOLD = 80;
+  const DELTA_BUFFER = 8;
+
+  let lastScrollY = window.scrollY;
+  let isTicking = false;
 
   // If page has no hero, keep solid always
   if (!hero) {
     header.classList.add('header--solid');
     header.classList.remove('header-transparent');
-    return;
+  } else {
+    header.classList.add('header-transparent');
   }
 
-  header.classList.add('header-transparent');
-
   const update = () => {
-    // Don't interfere with header styling while mobile menu is open
-    if (document.body.classList.contains('menu-open')) return;
+    const currentScrollY = Math.max(0, window.scrollY);
 
-    if (window.scrollY > 50) {
-      header.classList.add('header--solid');
-      header.classList.remove('header-transparent');
-    } else {
-      header.classList.remove('header--solid');
-      header.classList.add('header-transparent');
+    // Don't modify or hide header while mobile menu is open
+    if (document.body.classList.contains('menu-open')) {
+      header.classList.remove('header--hidden');
+      lastScrollY = currentScrollY;
+      isTicking = false;
+      return;
     }
+
+    // 1. Transparent vs Solid state
+    if (hero) {
+      if (currentScrollY > 50) {
+        header.classList.add('header--solid');
+        header.classList.remove('header-transparent');
+      } else {
+        header.classList.remove('header--solid');
+        header.classList.add('header-transparent');
+      }
+    }
+
+    // 2. Hide on Scroll Down / Show on Scroll Up
+    const scrollDelta = currentScrollY - lastScrollY;
+
+    if (currentScrollY <= SCROLL_THRESHOLD) {
+      header.classList.remove('header--hidden');
+    } else if (Math.abs(scrollDelta) > DELTA_BUFFER) {
+      if (scrollDelta > 0 && currentScrollY > SCROLL_THRESHOLD) {
+        // Scrolling DOWN -> Hide header smoothly
+        header.classList.add('header--hidden');
+      } else if (scrollDelta < 0) {
+        // Scrolling UP -> Show header smoothly
+        header.classList.remove('header--hidden');
+      }
+    }
+
+    lastScrollY = currentScrollY;
+    isTicking = false;
   };
 
-  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('scroll', () => {
+    if (!isTicking) {
+      window.requestAnimationFrame(update);
+      isTicking = true;
+    }
+  }, { passive: true });
+
   update();
 }
 
@@ -98,6 +136,7 @@ function initMobileMenu() {
     menu.classList.remove('open');
     toggle.classList.remove('open');
     unlockScroll();
+    if (header) header.classList.remove('header--hidden');
     // Re-evaluate header state after menu closes
     window.dispatchEvent(new Event('scroll'));
     if (focusToggle && typeof toggle.focus === 'function') {
